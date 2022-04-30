@@ -14,3 +14,18 @@ class JWTSettings(BaseSettings):
 
 
 jwt_settings = JWTSettings()
+
+
+class DBSettings(BaseSettings):
+    host: str = "localhost"
+    port: int = 27017
+    auth: bool = False
+    user: str
+    pwd: str
+    name: str = "shop"
+
+    class Config:
+        env_prefix = "DB_"
+
+
+db_settings = DBSettings()
