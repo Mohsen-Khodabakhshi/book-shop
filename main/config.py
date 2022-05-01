@@ -7,7 +7,7 @@ class BaseSettings(PydanticBaseSettings):
 
 
 class JWTSettings(BaseSettings):
-    token: str = "MyToken"
+    authjwt_secret_key: str = "MyToken"
 
     class Config:
         env_prefix = "JWT_"

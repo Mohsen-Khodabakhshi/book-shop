@@ -1,11 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from fastapi_jwt_auth import AuthJWT
 
 from apps.user.controller import UserController
-from apps.user.schema import TestSchemaOut
+from apps.user.schema import TestSchema
 
 client_router = APIRouter()
+user_controller = UserController()
 
 
-@client_router.get("/", response_model=TestSchemaOut)
-async def main(name: str = "Mohsen"):
-    return await UserController().main(name)
+@client_router.post("/login")
+async def login(user: TestSchema, authorize: AuthJWT = Depends()):
+    return await user_controller.login(user=user, authorize=authorize)

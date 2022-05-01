@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class TestSchemaOut(BaseModel):
-    hello: str
+class TestSchema(BaseModel):
+    username: str
