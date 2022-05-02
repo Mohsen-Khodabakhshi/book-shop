@@ -3,7 +3,8 @@ from .events import sync_initialize_db
 
 
 class Services(object):
-    DB: Any | None = sync_initialize_db()
+    DB: Any = sync_initialize_db()
+    LOGGER: Any | None = None
 
 
 global_services = Services()

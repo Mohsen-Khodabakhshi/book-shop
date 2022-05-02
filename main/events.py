@@ -22,8 +22,14 @@ async def ensure_db_indexes(models):
 
 def create_start_app_handler() -> Callable:
     async def start_app() -> None:
+        services.global_services.LOGGER = await events.initialize_logger()
+        services.global_services.LOGGER.info("logger ok :)")
+
         services.global_services.DB = await events.initialize_db()
+        services.global_services.LOGGER.info("database connected :)")
+
         await ensure_db_indexes(application_models)
+        services.global_services.LOGGER.info("database indexes ok :)")
 
     return start_app
 

@@ -1,4 +1,8 @@
 from services.db.mongo.connection import Connection
+from services.logger.config import LogConfig
+
+import logging
+from logging.config import dictConfig
 
 from main.config import db_settings
 
@@ -18,3 +22,8 @@ async def initialize_db():
 
 def sync_initialize_db():
     return mongo_connection.db
+
+
+async def initialize_logger():
+    dictConfig(LogConfig().dict())
+    return logging.getLogger("mycoolapp")
