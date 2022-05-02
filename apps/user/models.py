@@ -9,7 +9,7 @@ instance = MotorAsyncIOInstance(db)
 
 
 @instance.register
-class User(Document):
+class UserModel(Document):
     name = fields.StringField()
 
     class Meta:

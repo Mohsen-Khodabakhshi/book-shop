@@ -12,10 +12,18 @@ from services import events
 
 from .config import JWTSettings
 
+from apps import application_models
+
+
+async def ensure_db_indexes(models):
+    for model in models:
+        await model.ensure_indexes()
+
 
 def create_start_app_handler() -> Callable:
     async def start_app() -> None:
         services.global_services.DB = await events.initialize_db()
+        await ensure_db_indexes(application_models)
 
     return start_app
 
