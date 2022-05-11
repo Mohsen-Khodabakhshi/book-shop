@@ -1,30 +1,14 @@
-from pydantic import BaseModel as PydanticBaseModel
+from umongo import Document, fields
 
-from datetime import datetime
+from services import global_services
 
-
-class SoftDeleteBaseModel(PydanticBaseModel):
-    deleted: bool | None = False
-    deleted_time: datetime | None = None
+db = global_services.DB
+instance = global_services.instance
 
 
-class DateTimeBaseModel(PydanticBaseModel):
-    modified_time: datetime
-    created_time: datetime
-
-    class Config:
-        json_encoders = {
-            datetime: lambda dt: dt.strftime('%Y-%m-%d %H:%M:%S')
-        }
-
-
-class ReadBaseModel(SoftDeleteBaseModel, DateTimeBaseModel):
-    ...
-
-
-class UpdateBaseModel(SoftDeleteBaseModel):
-    ...
-
-
-class CreateBaseModel(SoftDeleteBaseModel, DateTimeBaseModel):
-    ...
+@instance.register
+class BaseModel(Document):
+    created_at = fields.DateTimeField(allow_none=True)
+    updated_at = fields.DateTimeField(allow_none=True)
+    deleted_at = fields.DateTimeField(allow_none=True)
+    deleted = fields.BooleanField(default=False)
