@@ -1,7 +1,7 @@
-from beanie import Document
+from lib.common_model import BaseModel
 
 
-class User(Document):
+class User(BaseModel):
     name: str
     description: str | None = None
 
