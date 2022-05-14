@@ -1,10 +1,10 @@
 from services.db.mongo.crud import BaseCRUD as MongoBaseCRUD
 
-from .models import UserModel
+from .models import User
 
 
 class UserCRUD(MongoBaseCRUD):
     ...
 
 
-user_crud = UserCRUD(UserModel)
+user_crud = UserCRUD(User)

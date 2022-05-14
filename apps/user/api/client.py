@@ -17,5 +17,5 @@ async def login(user: TestSchema, authorize: AuthJWT = Depends()):
 
 @client_router.get('')
 async def home():
-    print(await user_crud.get(name="mohsen"))
+    print(await user_crud.create(name="mohsen"))
     return {"name": "name"}

@@ -6,6 +6,8 @@ from fastapi.responses import JSONResponse
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 
+from beanie import init_beanie
+
 from typing import Callable
 
 from services import events
@@ -13,11 +15,6 @@ from services import events
 from .config import JWTSettings
 
 from apps import application_models
-
-
-async def ensure_db_indexes(models):
-    for model in models:
-        await model.ensure_indexes()
 
 
 def create_start_app_handler() -> Callable:
@@ -28,8 +25,8 @@ def create_start_app_handler() -> Callable:
         services.global_services.DB = await events.initialize_db()
         services.global_services.LOGGER.info("database connected :)")
 
-        await ensure_db_indexes(application_models)
-        services.global_services.LOGGER.info("database indexes ok :)")
+        await initialize_models_and_indexes(services.global_services.DB)
+        services.global_services.LOGGER.info("database models and indexes ok :)")
 
     return start_app
 
@@ -45,3 +42,7 @@ def config_jwt_auth(app):
             status_code=exc.status_code,
             content={"detail": exc.message}
         )
+
+
+async def initialize_models_and_indexes(db):
+    await init_beanie(database=db, document_models=application_models)

@@ -1,4 +1,4 @@
-from umongo import Document
+from beanie import Document
 
 
 class BaseCRUD:
@@ -6,5 +6,9 @@ class BaseCRUD:
         self.model: Document = model
 
     async def get(self, **kwargs):
-        document = await self.model.find_one(kwargs) # noqa
+        document = await self.model.find_one(kwargs)
+        return document
+
+    async def create(self, **kwargs):
+        document = await self.model(**kwargs).insert() # noqa
         return document
