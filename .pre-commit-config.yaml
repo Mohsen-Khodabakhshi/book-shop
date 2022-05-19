@@ -11,7 +11,6 @@ repos:
     -   id: check-merge-conflict
     -   id: check-xml
     -   id: check-docstring-first
-    -   id: double-quote-string-fixer
     -   id: check-case-conflict
     -   id: check-added-large-files
     -   id: debug-statements
@@ -33,7 +32,7 @@ repos:
         stages: [commit]
         language: system
         types: [python]
-        args: [--ignore, "W503,E203"]
+        args: [--ignore, "W503,E203,E501"]
 
 -   repo: https://github.com/pre-commit/mirrors-pylint
     rev: 'v3.0.0a4'

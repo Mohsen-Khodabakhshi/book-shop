@@ -3,7 +3,7 @@ from pydantic import BaseModel, HttpUrl, Field, EmailStr
 from lib import regex
 
 
-class BaseUserSchema(BaseModel):
+class BaseClientSchema(BaseModel):
     username: str = Field(regex=regex.only_letters)
     email: EmailStr
     first_name: str | None = Field(None, max_length=25)
@@ -11,10 +11,21 @@ class BaseUserSchema(BaseModel):
     phone_number: str | None = Field(None, regex=regex.iran_phone_number)
 
 
-class UserRegisterSchema(BaseUserSchema):
+class ClientShortDetailSchema(BaseClientSchema):
+    avatar: HttpUrl | None = None
+    verified: bool
+
+
+class ClientRegisterSchema(BaseClientSchema):
+    password: str = Field(min_length=8)
+
+
+class ClientLoginSchema(BaseModel):
+    email: EmailStr
     password: str
 
 
-class UserShortDetailSchema(BaseUserSchema):
-    avatar: HttpUrl | None = None
+class ClientAuthTokenSchema(BaseModel):
+    access_token: str
+    refresh_token: str
     verified: bool
