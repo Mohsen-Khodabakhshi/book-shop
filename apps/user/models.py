@@ -1,9 +1,9 @@
 from lib.common_model import BaseModel
-from lib.regex import *
+from lib import regex
 
 from typing import List
 
-from pydantic import Field, HttpUrl
+from pydantic import Field, HttpUrl, EmailStr
 
 from beanie import Link
 
@@ -20,15 +20,16 @@ class Address(BaseModel):
 
 
 class User(BaseModel):
-    first_name: str | None = None
-    last_name: str | None = None
-    username: str = Field(regex=only_letters)
-    phone_number: str | None = Field(regex=iran_phone_number)
-    email: str = Field(regex=email)
+    first_name: str | None = Field(None, max_length=25)
+    last_name: str | None = Field(None, max_length=35)
+    username: str = Field(regex=regex.only_letters)
+    phone_number: str | None = Field(regex=regex.iran_phone_number)
+    email: EmailStr
     password: str = Field(min_length=1)
     avatar: HttpUrl | None = None
     verified: bool = False
-    addresses: List[Link[Address]] | None = None
+    addresses: List[Link[Address]] | None = []
 
     class Settings:
         name = "users"
+        unique_fields = ['username', 'email']

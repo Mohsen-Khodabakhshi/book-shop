@@ -6,6 +6,16 @@ class BaseSettings(PydanticBaseSettings):
         env_file = ".env"
 
 
+class AppSettings(BaseSettings):
+    password_hashing_key: bytes
+
+    class Config:
+        env_prefix = "APP_"
+
+
+app_settings = AppSettings()
+
+
 class JWTSettings(BaseSettings):
     authjwt_secret_key: str = "MyToken"
 
