@@ -1,6 +1,4 @@
-from fastapi import APIRouter, Depends, status
-
-from fastapi_jwt_auth import AuthJWT
+from fastapi import APIRouter, status
 
 from apps.user.controller import UserController
 from apps.user.schema import (
@@ -28,5 +26,5 @@ async def register(user: ClientRegisterSchema):
     response_model=ClientAuthTokenSchema,
     status_code=status.HTTP_200_OK,
 )
-async def login(user: ClientLoginSchema, authorize: AuthJWT = Depends()):
-    return await user_controller.login(user=user, authorize=authorize)
+async def login(user: ClientLoginSchema):
+    return await user_controller.login(user=user)

@@ -27,5 +27,4 @@ class ClientLoginSchema(BaseModel):
 
 class ClientAuthTokenSchema(BaseModel):
     access_token: str
-    refresh_token: str
     verified: bool

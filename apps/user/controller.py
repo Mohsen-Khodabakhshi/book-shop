@@ -1,8 +1,7 @@
-from fastapi import HTTPException, Depends, status
+from fastapi import HTTPException, status
 
-from fastapi_jwt_auth import AuthJWT
 
-from main.config import app_settings
+from main.config import app_settings, JWTSettings
 
 from apps.user.schema import (
     ClientRegisterSchema,
@@ -11,12 +10,14 @@ from apps.user.schema import (
 )
 from apps.user.crud import user_crud
 
+from lib.jwt import JWTHandler
 from lib.encoder import Password
 from lib import exceptions
 
 from beanie.exceptions import UniqueFieldExists
 
 password_encoder = Password()
+jwt = JWTHandler(secret_key=JWTSettings().secret_key)
 
 
 class UserController:
@@ -32,7 +33,7 @@ class UserController:
         return user
 
     @staticmethod
-    async def login(user: ClientLoginSchema, authorize: AuthJWT = Depends()):
+    async def login(user: ClientLoginSchema):
         try:
             user_in = await user_crud.get(email=user.email)
         except exceptions.NotFound:
@@ -47,7 +48,6 @@ class UserController:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
             return ClientAuthTokenSchema(
-                access_token=authorize.create_access_token(subject=user_in.username),
-                refresh_token=authorize.create_refresh_token(subject=user_in.username),
+                access_token=jwt.create_access_token(subject=user_in.username),
                 verified=user_in.verified,
             )

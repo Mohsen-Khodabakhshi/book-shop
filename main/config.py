@@ -17,7 +17,7 @@ app_settings = AppSettings()
 
 
 class JWTSettings(BaseSettings):
-    authjwt_secret_key: str = "MyToken"
+    secret_key: str = "MyToken"
 
     class Config:
         env_prefix = "JWT_"
