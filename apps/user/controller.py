@@ -51,3 +51,12 @@ class UserController:
                 access_token=jwt.create_access_token(subject=user_in.username),
                 verified=user_in.verified,
             )
+
+    @staticmethod
+    async def profile(user):
+        try:
+            user_in = await user_crud.get(username=user)
+        except exceptions.NotFound:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        else:
+            return user_in

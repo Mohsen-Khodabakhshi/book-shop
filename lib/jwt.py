@@ -5,13 +5,6 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from datetime import datetime, timedelta
 
-from enum import Enum
-
-
-class UnAuthorizedMessage(Enum):
-    EXPIRED = "Signature has expired"
-    INVALID = "Invalid token"
-
 
 class JWTHandler:
     security = HTTPBearer()
@@ -42,12 +35,12 @@ class JWTHandler:
         except jwt.ExpiredSignatureError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=UnAuthorizedMessage.EXPIRED,
+                detail="Signature has expired",
             )
         except jwt.InvalidTokenError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=UnAuthorizedMessage.INVALID,
+                detail="Invalid token",
             )
 
     def auth_wrapper(self, auth: HTTPAuthorizationCredentials = Security(security)):
